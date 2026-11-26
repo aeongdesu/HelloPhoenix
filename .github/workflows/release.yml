@@ -46,12 +46,12 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_ALIAS: ${{ vars.KEY_ALIAS }}
         run: |
           set -euo pipefail
           if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
             if [ -z "$KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ]; then
-              echo "::error::Please add KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS on /settings/secrets/actions"
+              echo "::error::Please add KEYSTORE_BASE64, KEYSTORE_PASSWORD on /settings/secrets/actions"
               exit 1
             fi
           fi
@@ -66,7 +66,7 @@ jobs:
       - name: Test and build release APK
         env:
           SIGNING_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          SIGNING_KEY_ALIAS: ${{ vars.KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           set -euo pipefail
